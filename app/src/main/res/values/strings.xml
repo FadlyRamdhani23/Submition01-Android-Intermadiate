@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Submition1</string>
+    <string name="title_splash_screen_page">Dicoding Story</string>
+    <string name="message_welcome_page"><![CDATA[Welcome to Dicoding Story! >_<]]></string>
+    <string name="message_welcome_description">Ayo berbagi ilmu dan cerita mengenai Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicoding Story aja!!</string>
+    <string name="login">Login</string>
+    <string name="signup">signUp</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="title_signup_page">Lengkapi data dibawah ini</string>
+    <string name="name">Name</string>
+    <string name="title_login_page">Isi data dibawah ini</string>
+    <string name="message_login_page">Masukan terlebih dahulu datamu</string>
+    <string name="logout">Logout</string>
+</resources>
