@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun buttonSet(){
         val email = binding.emailEditText.text.toString()
-        binding.loginButton.isEnabled = email != null && email.toString().isNotEmpty()
+        binding.loginButton.isEnabled = email != null && email.toString().isNotEmpty() && binding.passwordEditText.text.toString().length >= 8
     }
 
     private fun actionSet(){

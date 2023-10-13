@@ -2,16 +2,14 @@ package org.d3if3127.submition1.ui.signup
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import org.d3if3127.submition1.R
-import org.d3if3127.submition1.data.model.User
 import org.d3if3127.submition1.databinding.ActivitySignUpBinding
-import org.d3if3127.submition1.ui.main.MainActivity
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -21,6 +19,8 @@ class SignupActivity : AppCompatActivity() {
         setContentView(binding.root)
         setToolbar()
         playAnimation()
+        actionSet()
+        buttonSet()
     }
     private fun setToolbar() {
         if (supportActionBar != null) {
@@ -60,9 +60,55 @@ class SignupActivity : AppCompatActivity() {
 
     }
 
+    private fun buttonSet(){
+        val email = binding.emailEditText.text.toString()
+        binding.signupButton.isEnabled = true && email.isNotEmpty() && binding.passwordEditText.text.toString().length >= 8
+    }
     private fun actionSet(){
+        binding.nameEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                buttonSet()
+                if (s.toString().length < 2) {
+                    binding.nameEditText.error = "Nama tidak boleh kosong"
+                } else {
+                    binding.passwordEditTextLayout.error = null
+                }
 
+            }
+            override fun afterTextChanged(s: Editable) {
+            }
+        })
+        binding.passwordEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (s.toString().length < 8) {
+                    binding.passwordEditTextLayout.error = "Password minimal 8 karakter"
+                } else {
+                    binding.passwordEditTextLayout.error = null
+                }
+                buttonSet()
+            }
+            override fun afterTextChanged(s: Editable) {
+            }
+        })
+        binding.emailEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (s.toString().length < 2) {
+                    binding.emailEditText.error = "Email harus diisi"
+                } else {
+                    binding.emailEditText.error = null
+                }
+                buttonSet()
+            }
+            override fun afterTextChanged(s: Editable) {
+            }
+        })
         binding.signupButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
 
