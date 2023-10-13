@@ -1,45 +1,64 @@
-package org.d3if3127.submition1.ui.button
+package org.d3if3127.submition1.ui.customview
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Patterns
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import org.d3if3127.submition1.R
 
-
-class MyEditText: AppCompatEditText, View.OnTouchListener {
+class MyEmailEditText : AppCompatEditText, View.OnTouchListener {
 
     private lateinit var clearButtonImage: Drawable
-
     constructor(context: Context) : super(context) {
         init()
     }
+
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         init()
     }
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
         init()
     }
-    private fun init(){
+
+    private fun init() {
         clearButtonImage = ContextCompat.getDrawable(context, R.drawable.baseline_close_24) as Drawable
         setOnTouchListener(this)
-
         addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Do Nothing
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                // Do nothing.
             }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
+                if (!Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) {
+                    error = "Invalid Format"
+                }
             }
-            override fun afterTextChanged(s: Editable?) {
-                // Do Nothing
+
+            override fun afterTextChanged(s: Editable) {
+                // Do nothing.
             }
         })
+        hint = "User@email.com"
+        textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+        paddingRight
+    }
+    private fun showClearButton(){
+        setButtonDrawables(endOfTheText = clearButtonImage)
+    }
+    private fun hideClearButton() {
+        setButtonDrawables()
     }
     override fun onTouch(v: View?, event: MotionEvent): Boolean {
         if (compoundDrawables[2] != null) {
@@ -77,13 +96,6 @@ class MyEditText: AppCompatEditText, View.OnTouchListener {
             } else return false
         }
         return false
-    }
-
-    private fun showClearButton(){
-        setButtonDrawables(endOfTheText = clearButtonImage)
-    }
-    private fun hideClearButton() {
-        setButtonDrawables()
     }
     private fun setButtonDrawables(
         startOfTheText: Drawable? = null,

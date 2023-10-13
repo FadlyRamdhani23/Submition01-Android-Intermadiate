@@ -5,6 +5,7 @@
     <string name="message_welcome_description">Ayo berbagi ilmu dan cerita mengenai Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicoding Story aja!!</string>
     <string name="login">Login</string>
     <string name="signup">signUp</string>
+    <string name="success" translatable="false">Success</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="title_signup_page">Lengkapi data dibawah ini</string>
@@ -12,4 +13,9 @@
     <string name="title_login_page">Isi data dibawah ini</string>
     <string name="message_login_page">Masukan terlebih dahulu datamu</string>
     <string name="logout">Logout</string>
+    <string name="success_account_created">Your account has been created</string>
+    <string name="positive_dialog_btn_text">OK</string>
+    <string name="error">Error</string>
+    <string name="sign_up_error">The account has been created with this email, or check your connection</string>
+    <string name="sign_up">Sign Up</string>
 </resources>

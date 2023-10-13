@@ -18,12 +18,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.getSession().observe(this){ user ->
-            if (!user.isLogin){
-                startActivity(Intent(this, WelcomeActivity::class.java))
-                finish()
-            }
-        }
         actionSet()
     }
     private fun actionSet(){

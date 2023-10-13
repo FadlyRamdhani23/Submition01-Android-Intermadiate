@@ -1,6 +1,7 @@
 package org.d3if3127.submition1.data.preference
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -22,6 +23,17 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[IS_LOGIN_KEY] = true
         }
     }
+    suspend fun saveToken(token: String?) {
+        if (token != null) {
+            dataStore.edit { preferences ->
+                preferences[TOKEN_KEY] = token
+            }
+        } else {
+            // Handle jika token null (opsional, bisa jadi Anda ingin melempar pengecualian atau melakukan tindakan lain)
+            Log.e("TokenError", "Token is null in the login response")
+        }
+    }
+
 
     fun getSession(): Flow<User> {
         return dataStore.data.map { preferences ->

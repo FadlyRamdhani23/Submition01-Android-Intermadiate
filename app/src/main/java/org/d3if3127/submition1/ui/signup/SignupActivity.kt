@@ -2,17 +2,31 @@ package org.d3if3127.submition1.ui.signup
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import id.vee.android.ui.signup.SignupViewModel
+import kotlinx.coroutines.launch
+import org.d3if3127.submition1.R
 import org.d3if3127.submition1.databinding.ActivitySignUpBinding
+import org.d3if3127.submition1.ui.ViewModelFactory
+import org.d3if3127.submition1.ui.login.LoginActivity
+import org.d3if3127.submition1.ui.login.LoginViewModel
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
+    private val viewModel by viewModels<SignupViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
@@ -21,6 +35,22 @@ class SignupActivity : AppCompatActivity() {
         playAnimation()
         actionSet()
         buttonSet()
+
+    }
+    private suspend fun performRegistration(name: String, email: String, password: String) {
+        try {
+            val response = viewModel.register(name, email, password)
+            Log.d("Registration", "Registration successful: $response")
+            runOnUiThread {
+                showSuccessDialog(email)
+                showLoading(false)
+            }
+        } catch (e: Exception) {
+            Log.e("Registration", "Registration failed: $e")
+            runOnUiThread {
+                showLoading(false)
+            }
+        }
     }
     private fun setToolbar() {
         if (supportActionBar != null) {
@@ -110,18 +140,27 @@ class SignupActivity : AppCompatActivity() {
             }
         })
         binding.signupButton.setOnClickListener {
+            val name = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
-
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan belajar coding.")
-                setPositiveButton("Lanjut") { _, _ ->
-                    finish()
-                }
-                create()
-                show()
+            val password = binding.passwordEditText.text.toString()
+            showLoading(true)
+            lifecycleScope.launch {
+                performRegistration(name, email, password)
             }
         }
     }
-
+    private fun showSuccessDialog(email: String) {
+        AlertDialog.Builder(this).apply {
+            setTitle("Yeah!")
+            setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan belajar coding.")
+            setPositiveButton("Lanjut") { _, _ ->
+                finish()
+            }
+            create()
+            show()
+        }
+    }
+    private fun showLoading(isLoading: Boolean){
+        binding.loadingProgressBar.isVisible = isLoading
+    }
 }

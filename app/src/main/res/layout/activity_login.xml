@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@+id/emailTextView"
         app:startIconDrawable="@drawable/ic_baseline_email_24">
 
-        <org.d3if3127.submition1.ui.button.MyEditText
+        <org.d3if3127.submition1.ui.customview.MyEmailEditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="57dp"
@@ -122,7 +122,7 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordTextView"
         app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
-        <org.d3if3127.submition1.ui.button.MyEditText
+        <org.d3if3127.submition1.ui.customview.MyPasswordEditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="57dp"
@@ -131,7 +131,7 @@
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <org.d3if3127.submition1.ui.button.Buttons
+    <org.d3if3127.submition1.ui.customview.Buttons
         android:id="@+id/loginButton"
         android:layout_width="0dp"
         android:layout_height="64dp"

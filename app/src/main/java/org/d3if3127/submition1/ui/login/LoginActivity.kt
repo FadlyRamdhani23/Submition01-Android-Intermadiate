@@ -7,11 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.d3if3127.submition1.data.model.User
 import org.d3if3127.submition1.databinding.ActivityLoginBinding
 import org.d3if3127.submition1.ui.ViewModelFactory
@@ -30,6 +34,8 @@ class LoginActivity : AppCompatActivity() {
         actionSet()
         playAnimation()
         buttonSet()
+        performLogin()
+
     }
     private fun setToolbar() {
         if (supportActionBar != null) {
@@ -45,59 +51,63 @@ class LoginActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    private fun performLogin() {
+        binding.loginButton.setOnClickListener {
+            val email = binding.emailEditText.text.toString()
+            val password = binding.passwordEditText.text.toString()
 
+            GlobalScope.launch(Dispatchers.IO) {
+                try {
+                    viewModel.login(email, password)
+                    runOnUiThread {
+                        // Tampilkan pesan berhasil
+                        showSuccessDialog()
+                    }
+                } catch (e: Exception) {
+                    // Handle kesalahan saat login
+                    Log.e("LoginError", e.toString())
+                }
+            }
+        }
+    }
     private fun buttonSet(){
         val email = binding.emailEditText.text.toString()
-        binding.loginButton.isEnabled = email != null && email.toString().isNotEmpty() && binding.passwordEditText.text.toString().length >= 8
+        binding.loginButton.isEnabled = true && email.toString().isNotEmpty() && binding.passwordEditText.text.toString().length >= 8
+    }
+    private fun showSuccessDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Yeah!")
+            setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+            setPositiveButton("Lanjut") { _, _ ->
+                val intent = Intent(context, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
+            }
+            create()
+            show()
+        }
     }
 
     private fun actionSet(){
-        binding.passwordEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().length < 8) {
-                    binding.passwordEditTextLayout.error = "Password minimal 8 karakter"
-                } else {
-                    binding.passwordEditTextLayout.error = null
-                }
-
-            }
-            override fun afterTextChanged(s: Editable) {
-            }
-        })
-
         binding.emailEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            override fun afterTextChanged(s: Editable?) {
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 buttonSet()
             }
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().length < 2) {
-                    binding.emailEditText.error = "Email harus diisi"
-                } else {
-                    binding.emailEditText.error = null
-                }
-                buttonSet()
-            }
-            override fun afterTextChanged(s: Editable) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        binding.loginButton.setOnClickListener {
-            val email = binding.emailEditText.text.toString()
-            viewModel.saveSession(User(email, "sample_token"))
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
-                setPositiveButton("Lanjut") { _, _ ->
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    finish()
-                }
-                create()
-                show()
+        binding.passwordEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
             }
-        }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                buttonSet()
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
     }
 
     private fun playAnimation(){
