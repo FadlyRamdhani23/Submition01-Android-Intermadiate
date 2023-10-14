@@ -10,17 +10,15 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import id.vee.android.ui.signup.SignupViewModel
 import kotlinx.coroutines.launch
-import org.d3if3127.submition1.R
 import org.d3if3127.submition1.databinding.ActivitySignUpBinding
 import org.d3if3127.submition1.ui.ViewModelFactory
 import org.d3if3127.submition1.ui.login.LoginActivity
-import org.d3if3127.submition1.ui.login.LoginViewModel
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -48,6 +46,7 @@ class SignupActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("Registration", "Registration failed: $e")
             runOnUiThread {
+                showfailedDialog()
                 showLoading(false)
             }
         }
@@ -92,33 +91,16 @@ class SignupActivity : AppCompatActivity() {
 
     private fun buttonSet(){
         val email = binding.emailEditText.text.toString()
-        binding.signupButton.isEnabled = true && email.isNotEmpty() && binding.passwordEditText.text.toString().length >= 8
+        binding.signupButton.isEnabled = true && email.isNotEmpty() && binding.passwordEditText.text.toString().length >= 7
     }
     private fun actionSet(){
+        viewModel.isLoading.observe(this){
+            showLoading(it)
+        }
         binding.nameEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                buttonSet()
-                if (s.toString().length < 2) {
-                    binding.nameEditText.error = "Nama tidak boleh kosong"
-                } else {
-                    binding.passwordEditTextLayout.error = null
-                }
-
-            }
-            override fun afterTextChanged(s: Editable) {
-            }
-        })
-        binding.passwordEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().length < 8) {
-                    binding.passwordEditTextLayout.error = "Password minimal 8 karakter"
-                } else {
-                    binding.passwordEditTextLayout.error = null
-                }
                 buttonSet()
             }
             override fun afterTextChanged(s: Editable) {
@@ -129,11 +111,15 @@ class SignupActivity : AppCompatActivity() {
 
             }
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().length < 2) {
-                    binding.emailEditText.error = "Email harus diisi"
-                } else {
-                    binding.emailEditText.error = null
-                }
+                buttonSet()
+            }
+            override fun afterTextChanged(s: Editable) {
+            }
+        })
+        binding.passwordEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 buttonSet()
             }
             override fun afterTextChanged(s: Editable) {
@@ -154,7 +140,19 @@ class SignupActivity : AppCompatActivity() {
             setTitle("Yeah!")
             setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan belajar coding.")
             setPositiveButton("Lanjut") { _, _ ->
+                startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
                 finish()
+            }
+            create()
+            show()
+        }
+    }
+    private fun showfailedDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Yeah!")
+            setMessage("Anda gagal login. Silahkan coba lagi")
+            setPositiveButton("Lanjut") { _, _ ->
+            Toast.makeText(this@SignupActivity, "Ayo Coba lagi login", Toast.LENGTH_SHORT).show()
             }
             create()
             show()

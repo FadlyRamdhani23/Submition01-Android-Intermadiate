@@ -27,6 +27,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         if (token != null) {
             dataStore.edit { preferences ->
                 preferences[TOKEN_KEY] = token
+                preferences[IS_LOGIN_KEY] = true
             }
         } else {
             // Handle jika token null (opsional, bisa jadi Anda ingin melempar pengecualian atau melakukan tindakan lain)

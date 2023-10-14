@@ -3,11 +3,11 @@ package org.d3if3127.submition1.ui
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import id.vee.android.ui.signup.SignupViewModel
 import org.d3if3127.submition1.data.repository.UserRepository
 import org.d3if3127.submition1.di.Injection
 import org.d3if3127.submition1.ui.login.LoginViewModel
 import org.d3if3127.submition1.ui.main.MainViewModel
+import org.d3if3127.submition1.ui.signup.SignupViewModel
 
 class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
 

@@ -13,10 +13,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.d3if3127.submition1.data.model.User
 import org.d3if3127.submition1.databinding.ActivityLoginBinding
 import org.d3if3127.submition1.ui.ViewModelFactory
 import org.d3if3127.submition1.ui.main.MainActivity
@@ -51,20 +52,24 @@ class LoginActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    @OptIn(DelicateCoroutinesApi::class)
     private fun performLogin() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-
+            showLoading(true)
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     viewModel.login(email, password)
                     runOnUiThread {
-                        // Tampilkan pesan berhasil
-                        showSuccessDialog()
+                            showSuccessDialog()
+                        showLoading(false)
                     }
                 } catch (e: Exception) {
-                    // Handle kesalahan saat login
+                    runOnUiThread {
+                        showFailedDialog()
+                        showLoading(false)
+                    }
                     Log.e("LoginError", e.toString())
                 }
             }
@@ -72,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun buttonSet(){
         val email = binding.emailEditText.text.toString()
-        binding.loginButton.isEnabled = true && email.toString().isNotEmpty() && binding.passwordEditText.text.toString().length >= 8
+        binding.loginButton.isEnabled = true && email.isNotEmpty() && binding.passwordEditText.text.toString().length >= 7
     }
     private fun showSuccessDialog() {
         AlertDialog.Builder(this).apply {
@@ -88,8 +93,22 @@ class LoginActivity : AppCompatActivity() {
             show()
         }
     }
+    private fun showFailedDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Yeah!")
+            setMessage("Anda gagal login. Silahkan coba lagi")
+            setPositiveButton("Lanjut") { _, _ ->
+            Toast.makeText(this@LoginActivity, "Ayo Coba lagi login", Toast.LENGTH_SHORT).show()
+            }
+            create()
+            show()
+        }
+    }
 
     private fun actionSet(){
+        viewModel.isLoading.observe(this){
+            showLoading(it)
+        }
         binding.emailEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -130,5 +149,8 @@ class LoginActivity : AppCompatActivity() {
             start()
         }
 
+    }
+    private fun showLoading(isLoading: Boolean){
+        binding.loadingProgressBar.isVisible = isLoading
     }
 }
