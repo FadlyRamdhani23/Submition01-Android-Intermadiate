@@ -15,10 +15,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import org.d3if3127.submition1.data.response.ErrorResponse
 import org.d3if3127.submition1.databinding.ActivitySignUpBinding
 import org.d3if3127.submition1.ui.ViewModelFactory
 import org.d3if3127.submition1.ui.login.LoginActivity
+import retrofit2.HttpException
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -43,10 +46,12 @@ class SignupActivity : AppCompatActivity() {
                 showSuccessDialog(email)
                 showLoading(false)
             }
-        } catch (e: Exception) {
-            Log.e("Registration", "Registration failed: $e")
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message
             runOnUiThread {
-                showfailedDialog()
+                errorMessage?.let { showfailedDialog(it) }
                 showLoading(false)
             }
         }
@@ -147,11 +152,13 @@ class SignupActivity : AppCompatActivity() {
             show()
         }
     }
-    private fun showfailedDialog() {
+    private fun showfailedDialog(errorMessage: String) {
         AlertDialog.Builder(this).apply {
             setTitle("Yeah!")
-            setMessage("Anda gagal login. Silahkan coba lagi")
+            setMessage(errorMessage)
             setPositiveButton("Lanjut") { _, _ ->
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
             Toast.makeText(this@SignupActivity, "Ayo Coba lagi login", Toast.LENGTH_SHORT).show()
             }
             create()

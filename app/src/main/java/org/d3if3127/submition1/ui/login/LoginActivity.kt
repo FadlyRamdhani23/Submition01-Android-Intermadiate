@@ -98,6 +98,8 @@ class LoginActivity : AppCompatActivity() {
             setTitle("Yeah!")
             setMessage("Anda gagal login. Silahkan coba lagi")
             setPositiveButton("Lanjut") { _, _ ->
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
             Toast.makeText(this@LoginActivity, "Ayo Coba lagi login", Toast.LENGTH_SHORT).show()
             }
             create()
