@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.d3if3127.submition1.data.repository.UserRepository
 import org.d3if3127.submition1.di.Injection
+import org.d3if3127.submition1.ui.detail.DetailViewModel
 import org.d3if3127.submition1.ui.login.LoginViewModel
 import org.d3if3127.submition1.ui.main.MainViewModel
 import org.d3if3127.submition1.ui.signup.SignupViewModel
@@ -22,6 +23,9 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             }
             modelClass.isAssignableFrom(SignupViewModel::class.java) -> {
                 SignupViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
+                DetailViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

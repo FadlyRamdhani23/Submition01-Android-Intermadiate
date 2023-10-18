@@ -18,4 +18,6 @@
     <string name="error">Error</string>
     <string name="sign_up_error">The account has been created with this email, or check your connection</string>
     <string name="sign_up">Sign Up</string>
+    <string name="avatar">avatar</string>
+    <string name="photo">photo</string>
 </resources>

@@ -14,15 +14,8 @@ import org.d3if3127.submition1.data.model.User
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 
-class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
+class UserPreference private constructor( val dataStore: DataStore<Preferences>) {
 
-    suspend fun saveSession(user: User) {
-        dataStore.edit { preferences ->
-            preferences[EMAIL_KEY] = user.email
-            preferences[TOKEN_KEY] = user.token
-            preferences[IS_LOGIN_KEY] = true
-        }
-    }
     suspend fun saveToken(token: String?) {
         if (token != null) {
             dataStore.edit { preferences ->
@@ -35,7 +28,6 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
-
     fun getSession(): Flow<User> {
         return dataStore.data.map { preferences ->
             User(
@@ -43,6 +35,12 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
                 preferences[TOKEN_KEY] ?: "",
                 preferences[IS_LOGIN_KEY] ?: false
             )
+        }
+    }
+
+    fun getToken(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[TOKEN_KEY] ?: ""
         }
     }
 
@@ -56,9 +54,9 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         @Volatile
         private var INSTANCE: UserPreference? = null
 
-        private val EMAIL_KEY = stringPreferencesKey("email")
-        private val TOKEN_KEY = stringPreferencesKey("token")
-        private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
+        val EMAIL_KEY = stringPreferencesKey("email")
+        val TOKEN_KEY = stringPreferencesKey("token")
+        val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {
