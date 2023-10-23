@@ -1,4 +1,4 @@
-package org.d3if3127.submition1.ui
+package org.d3if3127.submition1.ui.factory
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -9,6 +9,7 @@ import org.d3if3127.submition1.ui.detail.DetailViewModel
 import org.d3if3127.submition1.ui.login.LoginViewModel
 import org.d3if3127.submition1.ui.main.MainViewModel
 import org.d3if3127.submition1.ui.signup.SignupViewModel
+import org.d3if3127.submition1.ui.upload.UploadViewModel
 
 class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
 
@@ -26,6 +27,9 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(UploadViewModel::class.java) -> {
+                UploadViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

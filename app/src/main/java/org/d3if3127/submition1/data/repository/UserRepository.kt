@@ -1,21 +1,15 @@
 package org.d3if3127.submition1.data.repository
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import okhttp3.MultipartBody
 import org.d3if3127.submition1.data.model.User
 import org.d3if3127.submition1.data.preference.UserPreference
 import org.d3if3127.submition1.data.response.DetailResponse
-import org.d3if3127.submition1.data.response.ListStoryItem
+import org.d3if3127.submition1.data.response.FileUploadResponse
+import org.d3if3127.submition1.data.response.LoginResult
 import org.d3if3127.submition1.data.response.RegisterResponse
 import org.d3if3127.submition1.data.response.StoryResponse
-import org.d3if3127.submition1.data.retrofit.ApiConfig
 import org.d3if3127.submition1.data.retrofit.ApiService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class UserRepository private constructor(
     private val userPreference: UserPreference,
@@ -34,10 +28,28 @@ class UserRepository private constructor(
     }
     suspend fun register(name: String, email: String, password: String): RegisterResponse {
         return apiService.register(name, email, password)
+
     }
-    suspend fun login(email: String, password: String) {
-        val loginResponse = apiService.login(email, password)
-        loginResponse.loginResult?.token?.let { saveToken(it) }
+
+    suspend fun login(email: String, password: String): LoginResult {
+        try {
+            val loginResponse = apiService.login(email, password)
+            val loginResult = loginResponse.loginResult
+
+            if (loginResult != null) {
+                saveToken(loginResult.token)
+                return loginResult
+            } else {
+                userPreference.logout()
+                throw Exception(loginResponse.message)
+            }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    suspend fun uploadImage(file: MultipartBody.Part, description: String ): FileUploadResponse {
+        return apiService.uploadImage(file, description)
     }
 
     suspend fun logout() {

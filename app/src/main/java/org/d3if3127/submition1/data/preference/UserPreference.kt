@@ -14,7 +14,7 @@ import org.d3if3127.submition1.data.model.User
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 
-class UserPreference private constructor( val dataStore: DataStore<Preferences>) {
+class UserPreference private constructor( private val dataStore: DataStore<Preferences>) {
 
     suspend fun saveToken(token: String?) {
         if (token != null) {
@@ -23,7 +23,6 @@ class UserPreference private constructor( val dataStore: DataStore<Preferences>)
                 preferences[IS_LOGIN_KEY] = true
             }
         } else {
-            // Handle jika token null (opsional, bisa jadi Anda ingin melempar pengecualian atau melakukan tindakan lain)
             Log.e("TokenError", "Token is null in the login response")
         }
     }

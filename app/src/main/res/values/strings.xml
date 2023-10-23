@@ -2,16 +2,16 @@
     <string name="app_name">Submition1</string>
     <string name="title_splash_screen_page">Dicoding Story</string>
     <string name="message_welcome_page"><![CDATA[Welcome to Dicoding Story! >_<]]></string>
-    <string name="message_welcome_description">Ayo berbagi ilmu dan cerita mengenai Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicoding Story aja!!</string>
+    <string name="message_welcome_description">Come share knowledge and stories about Android, iOS, Machine Learning, Cloud, Front-End, Back-End, and other IT fields? Just code the story!!</string>
     <string name="login">Login</string>
     <string name="signup">signUp</string>
     <string name="success" translatable="false">Success</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
-    <string name="title_signup_page">Lengkapi data dibawah ini</string>
+    <string name="title_signup_page">Complete the data below</string>
     <string name="name">Name</string>
-    <string name="title_login_page">Isi data dibawah ini</string>
-    <string name="message_login_page">Masukan terlebih dahulu datamu</string>
+    <string name="title_login_page">Fill in the data below</string>
+    <string name="message_login_page">Enter your data first</string>
     <string name="logout">Logout</string>
     <string name="success_account_created">Your account has been created</string>
     <string name="positive_dialog_btn_text">OK</string>
@@ -20,4 +20,19 @@
     <string name="sign_up">Sign Up</string>
     <string name="avatar">avatar</string>
     <string name="photo">photo</string>
+    <string name="upload">upload</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="description">Description</string>
+    <string name="upload_story">Upload Story</string>
+    <string name="empty_image_warning">warning</string>
+    <string name="submit_button_text">Submit</string>
+    <string name="fill_first_text">fill it in first</string>
+    <string name="password_error">Minimum 8 characters</string>
+    <string name="name_hint">can not be empty</string>
+    <string name="invalid">Invalid Format</string>
+    <string name="next">Next</string>
+    <string name="try_again">try logging in again</string>
+    <string name="failed">You failed to log in. Please try again</string>
+    <string name="success_login">You have successfully logged in. Can\'t wait to learn, huh?</string>
 </resources>

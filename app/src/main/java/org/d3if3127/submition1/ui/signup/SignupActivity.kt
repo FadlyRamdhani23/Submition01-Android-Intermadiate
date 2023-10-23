@@ -17,9 +17,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import org.d3if3127.submition1.R
 import org.d3if3127.submition1.data.response.ErrorResponse
 import org.d3if3127.submition1.databinding.ActivitySignUpBinding
-import org.d3if3127.submition1.ui.ViewModelFactory
+import org.d3if3127.submition1.ui.factory.ViewModelFactory
 import org.d3if3127.submition1.ui.login.LoginActivity
 import retrofit2.HttpException
 
@@ -143,8 +144,8 @@ class SignupActivity : AppCompatActivity() {
     private fun showSuccessDialog(email: String) {
         AlertDialog.Builder(this).apply {
             setTitle("Yeah!")
-            setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan belajar coding.")
-            setPositiveButton("Lanjut") { _, _ ->
+            setMessage( resources.getString(R.string.success) + email)
+            setPositiveButton(resources.getString(R.string.next)) { _, _ ->
                 startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
                 finish()
             }
@@ -156,10 +157,10 @@ class SignupActivity : AppCompatActivity() {
         AlertDialog.Builder(this).apply {
             setTitle("Yeah!")
             setMessage(errorMessage)
-            setPositiveButton("Lanjut") { _, _ ->
+            setPositiveButton(resources.getString(R.string.next)) { _, _ ->
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-            Toast.makeText(this@SignupActivity, "Ayo Coba lagi login", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@SignupActivity, resources.getString(R.string.try_again), Toast.LENGTH_SHORT).show()
             }
             create()
             show()

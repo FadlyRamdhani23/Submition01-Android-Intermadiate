@@ -7,7 +7,7 @@ import android.os.Looper
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import org.d3if3127.submition1.databinding.ActivitySplashScreenBinding
-import org.d3if3127.submition1.ui.ViewModelFactory
+import org.d3if3127.submition1.ui.factory.ViewModelFactory
 import org.d3if3127.submition1.ui.main.MainActivity
 import org.d3if3127.submition1.ui.main.MainViewModel
 import org.d3if3127.submition1.ui.welcome.WelcomeActivity
@@ -15,7 +15,7 @@ import org.d3if3127.submition1.ui.welcome.WelcomeActivity
 class SplashScreenActivity : AppCompatActivity() {
 
         private lateinit var binding: ActivitySplashScreenBinding
-        private val SPLASH_DISPLAY_LENGTH = 2000
+        private val splashDisplayLength = 2000
         private val viewModel by viewModels<MainViewModel> {
             ViewModelFactory.getInstance(this)
         }
@@ -33,13 +33,13 @@ class SplashScreenActivity : AppCompatActivity() {
                         val mainIntent = Intent(this@SplashScreenActivity, MainActivity::class.java)
                         startActivity(mainIntent)
                         finish()
-                    }, SPLASH_DISPLAY_LENGTH.toLong())
+                    }, splashDisplayLength.toLong())
                 }else{
                     Handler(Looper.getMainLooper()).postDelayed({
                         val mainIntent = Intent(this@SplashScreenActivity, WelcomeActivity::class.java)
                         startActivity(mainIntent)
                         finish()
-                    }, SPLASH_DISPLAY_LENGTH.toLong())
+                    }, splashDisplayLength.toLong())
 
                 }
             }

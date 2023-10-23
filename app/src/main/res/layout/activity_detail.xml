@@ -27,6 +27,7 @@
         android:layout_height="218dp"
         android:transitionName="profile"
         android:layout_gravity="center"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

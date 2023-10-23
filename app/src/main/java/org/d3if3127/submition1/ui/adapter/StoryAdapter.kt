@@ -1,4 +1,4 @@
-package org.d3if3127.submition1.ui
+package org.d3if3127.submition1.ui.adapter
 
 import android.app.Activity
 import android.content.Intent

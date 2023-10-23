@@ -24,9 +24,6 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
         emit(storyResponse)
     }
 
-
-
-
     fun logout() {
         viewModelScope.launch {
             repository.logout()

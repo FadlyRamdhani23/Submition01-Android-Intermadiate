@@ -36,18 +36,18 @@ class MyEmailEditText : AppCompatEditText, View.OnTouchListener {
         setOnTouchListener(this)
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // Do nothing.
+
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
                 if (!Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) {
-                    error = "Invalid Format"
+                    error =  resources.getString(R.string.invalid)
                 }
             }
 
             override fun afterTextChanged(s: Editable) {
-                // Do nothing.
+
             }
         })
         hint = "User@email.com"

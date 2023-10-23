@@ -3,12 +3,8 @@ package org.d3if3127.submition1.ui.welcome
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.d3if3127.submition1.databinding.ActivityWelcomeBinding
 import org.d3if3127.submition1.ui.login.LoginActivity
@@ -22,7 +18,6 @@ class WelcomeActivity : AppCompatActivity() {
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        setupView()
         setupAction()
         playAnimation()
     }
@@ -47,18 +42,6 @@ class WelcomeActivity : AppCompatActivity() {
         }
 
     }
-
-//    private fun setupView() {
-//        @Suppress("DEPRECATION")
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//            window.insetsController?.hide(WindowInsets.Type.statusBars())
-//        } else {
-//            window.setFlags(
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN
-//            )
-//        }
-//    }
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {

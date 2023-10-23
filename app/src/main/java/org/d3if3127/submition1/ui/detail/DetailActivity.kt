@@ -8,12 +8,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
-import org.d3if3127.submition1.R
 import org.d3if3127.submition1.data.response.DetailResponse
 import org.d3if3127.submition1.data.response.Story
 import org.d3if3127.submition1.databinding.ActivityDetailBinding
-import org.d3if3127.submition1.ui.ViewModelFactory
-import org.d3if3127.submition1.ui.main.MainViewModel
+import org.d3if3127.submition1.ui.factory.ViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
 
@@ -26,13 +24,13 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setToolbar()
-        val id = intent.getStringExtra(GITHUB_ID) // Use getStringExtra for a String value
+        val id = intent.getStringExtra(GITHUB_ID)
 
         viewModel.isLoading.observe(this) { isLoading ->
             showLoading(isLoading)
         }
 
-        // Check if id is not null before using it
+
         id?.let { nonNullId ->
             lifecycleScope.launch {
                 val detailResponse = viewModel.getDetail(nonNullId)

@@ -36,13 +36,13 @@ class MyNameEditText : AppCompatEditText, View.OnTouchListener {
 
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // Do nothing.
+
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 error = if (s.toString().isEmpty()) {
                     hideClearButton()
-                    "Tidak boleh kosong"
+                    resources.getString(R.string.name_hint)
                 } else {
                     showClearButton()
                     null
@@ -50,7 +50,7 @@ class MyNameEditText : AppCompatEditText, View.OnTouchListener {
             }
 
             override fun afterTextChanged(s: Editable) {
-                // Do nothing.
+
             }
         })
 
@@ -59,7 +59,7 @@ class MyNameEditText : AppCompatEditText, View.OnTouchListener {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        hint = "Tidak boleh kosong"
+        hint =  resources.getString(R.string.name_hint)
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
         paddingRight
     }

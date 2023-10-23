@@ -18,8 +18,9 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.d3if3127.submition1.R
 import org.d3if3127.submition1.databinding.ActivityLoginBinding
-import org.d3if3127.submition1.ui.ViewModelFactory
+import org.d3if3127.submition1.ui.factory.ViewModelFactory
 import org.d3if3127.submition1.ui.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -82,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
     private fun showSuccessDialog() {
         AlertDialog.Builder(this).apply {
             setTitle("Yeah!")
-            setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+            setMessage(resources.getString(R.string.success_login))
             setPositiveButton("Lanjut") { _, _ ->
                 val intent = Intent(context, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -96,11 +97,11 @@ class LoginActivity : AppCompatActivity() {
     private fun showFailedDialog() {
         AlertDialog.Builder(this).apply {
             setTitle("Yeah!")
-            setMessage("Anda gagal login. Silahkan coba lagi")
-            setPositiveButton("Lanjut") { _, _ ->
+            setMessage(resources.getString(R.string.failed))
+            setPositiveButton(resources.getString(R.string.next)) { _, _ ->
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-            Toast.makeText(this@LoginActivity, "Ayo Coba lagi login", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@LoginActivity, resources.getString(R.string.try_again), Toast.LENGTH_SHORT).show()
             }
             create()
             show()

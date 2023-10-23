@@ -33,7 +33,11 @@ class Buttons : AppCompatButton {
         setTextColor(txtColor)
         textSize = 12f
         gravity = Gravity.CENTER
-        text = if(isEnabled) "Submit" else "Isi Dulu"
+        text = if (isEnabled) {
+            resources.getString(R.string.submit_button_text)
+        } else {
+            resources.getString(R.string.fill_first_text)
+        }
     }
     private fun init() {
         txtColor = ContextCompat.getColor(context, android.R.color.background_light)
