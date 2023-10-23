@@ -9,6 +9,9 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
     suspend fun login(email: String, password: String) {
         repository.login(email, password)
     }
+//    suspend fun saveToken(token: String) {
+//        repository.saveToken(token)
+//    }
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 }

@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
                         showFailedDialog()
                         showLoading(false)
                     }
-                    Log.e("LoginError", e.toString())
+                    Log.e("Login", e.toString())
                 }
             }
         }
@@ -82,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun showSuccessDialog() {
         AlertDialog.Builder(this).apply {
+            Log.d("Login", "Login successful")
             setTitle("Yeah!")
             setMessage(resources.getString(R.string.success_login))
             setPositiveButton("Lanjut") { _, _ ->
