@@ -107,34 +107,43 @@ class UploadStoryActivity : AppCompatActivity() {
     }
 
     private fun uploadImage() {
-        currentImageUri?.let { uri ->
-            val imageFile = uriToFile(uri, this).reduceFileImage()
-            Log.d("Image File", "showImage: ${imageFile.path}")
-            val description = binding.descriptionEditText.text.toString()
+        val description = binding.descriptionEditText.text.toString()
 
-            showLoading(true)
-            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-            val multipartBody = MultipartBody.Part.createFormData(
-                "photo",
-                imageFile.name,
-                requestImageFile
-            )
-            lifecycleScope.launch {
-                try {
-                    viewModel.uploadImage(multipartBody, description)
-                    showLoading(false)
-                    val intent = Intent(this@UploadStoryActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                } catch (e: HttpException) {
-                    val errorBody = e.response()?.errorBody()?.string()
-                    val errorResponse = Gson().fromJson(errorBody, FileUploadResponse::class.java)
-                    showToast(errorResponse.message)
-                    showLoading(false)
+        if (description.isNotEmpty()) {
+            // Deskripsi sudah terisi, izinkan untuk mengunggah gambar.
+            currentImageUri?.let { uri ->
+                val imageFile = uriToFile(uri, this).reduceFileImage()
+                val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+                val multipartBody = MultipartBody.Part.createFormData(
+                    "photo",
+                    imageFile.name,
+                    requestImageFile
+                )
+
+                showLoading(true)
+                lifecycleScope.launch {
+                    try {
+                        viewModel.uploadImage(multipartBody, description)
+                        showLoading(false)
+                        val intent = Intent(this@UploadStoryActivity, MainActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                    } catch (e: HttpException) {
+                        val errorBody = e.response()?.errorBody()?.string()
+                        val errorResponse =
+                            Gson().fromJson(errorBody, FileUploadResponse::class.java)
+                        showToast(errorResponse.message)
+                        showLoading(false)
+                    }
                 }
-            }
-        } ?: showToast(getString(R.string.empty_image_warning))
+            } ?: showToast(getString(R.string.empty_image_warning))
+        } else {
+            // Deskripsi belum diisi, berikan pesan kesalahan kepada pengguna.
+            showToast(getString(R.string.empty_description_warning))
+        }
     }
+
     private fun setToolbar() {
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
