@@ -35,4 +35,5 @@
     <string name="try_again">try logging in again</string>
     <string name="failed">You failed to log in. Please try again</string>
     <string name="success_login">You have successfully logged in. Can\'t wait to learn, huh?</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

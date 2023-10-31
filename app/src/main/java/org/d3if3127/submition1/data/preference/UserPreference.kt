@@ -64,5 +64,8 @@ class UserPreference private constructor( private val dataStore: DataStore<Prefe
                 instance
             }
         }
+        fun refrehInstance() {
+            INSTANCE = null
+        }
     }
 }

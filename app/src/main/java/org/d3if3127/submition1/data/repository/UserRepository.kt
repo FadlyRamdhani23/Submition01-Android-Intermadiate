@@ -73,5 +73,8 @@ class UserRepository private constructor(
             instance ?: synchronized(this) {
                 instance ?: UserRepository(userPreference, apiService)
             }.also { instance = it }
+     fun refreshInstance() {
+            instance = null
+        }
     }
 }

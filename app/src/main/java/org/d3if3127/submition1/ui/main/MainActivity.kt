@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 val stories = storyResponse?.listStory ?: emptyList()
                 storiesAdapter.submitList(stories)
+                ViewModelFactory.refreshInstance()
                 showLoading(false)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             R.id.menuLogout -> {
                 // Menangani tindakan logout di sini
                 viewModel.logout()
+                ViewModelFactory.refreshInstance()
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
                 return true

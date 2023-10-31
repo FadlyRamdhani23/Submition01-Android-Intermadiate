@@ -47,5 +47,9 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             }
             return INSTANCE as ViewModelFactory
         }
+        fun refreshInstance() {
+            INSTANCE = null
+            Injection.refreshRepository()
+        }
     }
 }

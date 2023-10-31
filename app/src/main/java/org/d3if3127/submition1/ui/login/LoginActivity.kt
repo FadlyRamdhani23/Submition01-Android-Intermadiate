@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -53,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
     @OptIn(DelicateCoroutinesApi::class)
     private fun performLogin() {
         binding.loginButton.setOnClickListener {
@@ -62,6 +64,8 @@ class LoginActivity : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     viewModel.login(email, password)
+                    ViewModelFactory.refreshInstance()
+
                     runOnUiThread {
                             showSuccessDialog()
                         showLoading(false)
