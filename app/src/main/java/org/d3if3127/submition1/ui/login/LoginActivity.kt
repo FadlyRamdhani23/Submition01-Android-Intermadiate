@@ -53,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
     @OptIn(DelicateCoroutinesApi::class)
     private fun performLogin() {
         binding.loginButton.setOnClickListener {
@@ -62,8 +63,10 @@ class LoginActivity : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     viewModel.login(email, password)
+                    ViewModelFactory.refreshInstance()
+
                     runOnUiThread {
-                            showSuccessDialog()
+                        showSuccessDialog()
                         showLoading(false)
                     }
                 } catch (e: Exception) {
@@ -71,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
                         showFailedDialog()
                         showLoading(false)
                     }
-                    Log.e("Login", e.toString())
+                    Log.e("LoginError", e.toString())
                 }
             }
         }
@@ -82,7 +85,6 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun showSuccessDialog() {
         AlertDialog.Builder(this).apply {
-            Log.d("Login", "Login successful")
             setTitle("Yeah!")
             setMessage(resources.getString(R.string.success_login))
             setPositiveButton("Lanjut") { _, _ ->
@@ -102,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
             setPositiveButton(resources.getString(R.string.next)) { _, _ ->
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-            Toast.makeText(this@LoginActivity, resources.getString(R.string.try_again), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, resources.getString(R.string.try_again), Toast.LENGTH_SHORT).show()
             }
             create()
             show()

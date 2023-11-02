@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -135,6 +136,10 @@ class UploadStoryActivity : AppCompatActivity() {
                             Gson().fromJson(errorBody, FileUploadResponse::class.java)
                         showToast(errorResponse.message)
                         showLoading(false)
+                    }catch (e: Exception){
+                        Log.e("UploadError", e.toString())
+                        showFailedDialog()
+                        showLoading(false)
                     }
                 }
             } ?: showToast(getString(R.string.empty_image_warning))
@@ -163,6 +168,19 @@ class UploadStoryActivity : AppCompatActivity() {
     }
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+    private fun showFailedDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Yeah!")
+            setMessage(resources.getString(R.string.failed1))
+            setPositiveButton(resources.getString(R.string.next)) { _, _ ->
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                Toast.makeText(this@UploadStoryActivity, resources.getString(R.string.try_again), Toast.LENGTH_SHORT).show()
+            }
+            create()
+            show()
+        }
     }
     companion object {
         private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA

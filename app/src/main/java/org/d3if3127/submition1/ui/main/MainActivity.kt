@@ -6,15 +6,16 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.d3if3127.submition1.R
 import org.d3if3127.submition1.databinding.ActivityMainBinding
+import org.d3if3127.submition1.ui.adapter.LoadingStateAdapter
 import org.d3if3127.submition1.ui.adapter.StoryAdapter
 import org.d3if3127.submition1.ui.upload.UploadStoryActivity
 import org.d3if3127.submition1.ui.factory.ViewModelFactory
+import org.d3if3127.submition1.ui.maps.MapsActivity
 import org.d3if3127.submition1.ui.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
@@ -39,22 +40,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun actionSet() {
-        viewModel.stories.observe(this) { storyResponse ->
-            try {
-                val stories = storyResponse?.listStory ?: emptyList()
-                storiesAdapter.submitList(stories)
-                showLoading(false)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                showToast(e.message.toString())
-                startActivity(Intent(this, WelcomeActivity::class.java))
-                finish()
-            }
+        viewModel.stories.observe(this) {
+            storiesAdapter.submitData(lifecycle, it)
+            ViewModelFactory.refreshInstance()
+            showLoading(false)
         }
         storiesAdapter = StoryAdapter()
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.adapter = storiesAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+       recyclerView.adapter = storiesAdapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                storiesAdapter.retry()
+            }
+        )
         binding.uploadButton.setOnClickListener {
             viewModel.getSession().observe(this) { user ->
                 val moveWithObjectIntent = Intent(this, UploadStoryActivity::class.java)
@@ -78,14 +76,16 @@ class MainActivity : AppCompatActivity() {
             R.id.menuLogout -> {
                 // Menangani tindakan logout di sini
                 viewModel.logout()
+                ViewModelFactory.refreshInstance()
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
                 return true
             }
+            R.id.menuMaps -> {
+                startActivity(Intent(this, MapsActivity::class.java))
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
-    }
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

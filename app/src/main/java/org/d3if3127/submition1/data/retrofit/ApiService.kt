@@ -1,7 +1,6 @@
 package org.d3if3127.submition1.data.retrofit
 
 import okhttp3.MultipartBody
-import org.d3if3127.submition1.data.response.DetailResponse
 import org.d3if3127.submition1.data.response.FileUploadResponse
 import org.d3if3127.submition1.data.response.LoginResponse
 import org.d3if3127.submition1.data.response.RegisterResponse
@@ -26,19 +25,19 @@ interface ApiService {
 
     @GET("stories")
     suspend fun getStories(
-        @Header("Authorization") token: String
+        @Query("page") page: Int = 1,
+        @Query("size") size: Int = 20
     ): StoryResponse
-
-    @GET("stories/{id}")
-    suspend fun getDetailStory(
-        @Header("Authorization") token: String,
-        @Path("id") id: String ): DetailResponse
 
     @Multipart
     @POST("stories")
     suspend fun uploadImage(
-        @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
         @Part("description") description: String,
     ): FileUploadResponse
+    @GET("stories")
+    suspend fun getStoriesWithLocation(
+        @Query("location") location : Int = 1,
+    ): StoryResponse
+
 }

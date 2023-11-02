@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.launch
-import org.d3if3127.submition1.data.response.DetailResponse
-import org.d3if3127.submition1.data.response.Story
+import org.d3if3127.submition1.data.response.ListStoryItem
+
 import org.d3if3127.submition1.databinding.ActivityDetailBinding
 import org.d3if3127.submition1.ui.factory.ViewModelFactory
 
-class DetailActivity : AppCompatActivity() {
+class  DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private val viewModel by viewModels<DetailViewModel> {
@@ -24,18 +22,18 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setToolbar()
-        val id = intent.getStringExtra(GITHUB_ID)
+        val storyResponse = intent.getParcelableExtra<ListStoryItem>(GITHUB_ID)
 
         viewModel.isLoading.observe(this) { isLoading ->
             showLoading(isLoading)
         }
 
-
-        id?.let { nonNullId ->
-            lifecycleScope.launch {
-                val detailResponse = viewModel.getDetail(nonNullId)
-                setDetailScreen(detailResponse)
-            }
+        binding.apply {
+            name.text = storyResponse!!.id
+            description.text = storyResponse.description
+            Glide.with(this@DetailActivity)
+                .load(storyResponse!!.photoUrl)
+                .into(photo)
         }
     }
     private fun setToolbar() {
@@ -53,17 +51,6 @@ class DetailActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setDetailScreen(detailResponse: DetailResponse?) {
-        val detail: Story? = detailResponse?.story
-
-        binding.apply {
-            name.text = detail?.name
-            description.text = detail?.description
-            Glide.with(this@DetailActivity)
-                .load(detail?.photoUrl)
-                .into(photo)
-        }
-    }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBarr.isVisible = isLoading

@@ -1,6 +1,11 @@
 package org.d3if3127.submition1.data.response
 
+import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+
 
 data class StoryResponse(
 
@@ -13,8 +18,13 @@ data class StoryResponse(
 	@field:SerializedName("message")
 	val message: String? = null
 )
-
+@Parcelize
+@Entity(tableName = "story")
 data class ListStoryItem(
+
+	@PrimaryKey
+	@field:SerializedName("id")
+	val id: String,
 
 	@field:SerializedName("photoUrl")
 	val photoUrl: String? = null,
@@ -31,9 +41,7 @@ data class ListStoryItem(
 	@field:SerializedName("lon")
 	val lon: Double? = null,
 
-	@field:SerializedName("id")
-	val id: String? = null,
 
 	@field:SerializedName("lat")
 	val lat: Double? = null
-)
+): Parcelable

@@ -34,6 +34,12 @@
     <string name="next">Next</string>
     <string name="try_again">try logging in again</string>
     <string name="failed">You failed to log in. Please try again</string>
+    <string name="failed1">You failed. Please try again</string>
     <string name="success_login">You have successfully logged in. Can\'t wait to learn, huh?</string>
     <string name="empty_description_warning">fill in the description first</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
+    <string name="retry">retry</string>
 </resources>
